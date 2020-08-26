@@ -1,6 +1,6 @@
-A set of common utilities for an Android project. It includes SugarORM, Prefs, Retrofit, Google Gson and other utility methods.
+A set of common utilities for an Android project. It includes SugarORM, Prefs, Retrofit, Google Gson, AQuery and other utility methods.
 
-You do not need to add retrofit, gson, sugarorm and prefs to your application. This library will add those for you.
+You do not need to add retrofit, gson, sugarorm, aquery and prefs to your application. This library will add those for you.
 
 ### How to setup
 
