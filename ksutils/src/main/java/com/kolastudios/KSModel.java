@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * An extension of SugarRecord. Adds the method findByField() that takes an arbitrary field and finds by value
  */
-class KSModel extends SugarRecord {
+public class KSModel extends SugarRecord {
     public KSModel(){}
 
     /**

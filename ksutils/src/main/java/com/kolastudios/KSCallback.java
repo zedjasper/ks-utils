@@ -4,7 +4,7 @@ package com.kolastudios;
  * Callback for cached and network results
  * @param <T> The response type
  */
-interface KSCallback<T> {
+public interface KSCallback<T> {
     /**
      * Callback for cache or network results.
      * @param response The KSResponse object with body(), code() and whether it's cache results or not

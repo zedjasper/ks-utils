@@ -9,7 +9,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class CacheManager {
+public class CacheManager {
     private static Cache getCache(String url){
         return Cache.findByField(Cache.class, "MD5", KSUtils.md5(url));
     }
