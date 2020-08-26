@@ -1,0 +1,3 @@
+include ':ksutils'
+include ':app'
+rootProject.name = "KSUtilsTest"
