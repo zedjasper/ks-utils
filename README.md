@@ -4,6 +4,21 @@ You do not need to add retrofit, gson, sugarorm and prefs to your application. T
 
 ### How to setup
 
+Add it in your root build.gradle at the end of repositories
+
+`allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}`
+
+Add the dependency
+
+`dependencies {
+        implementation 'com.github.zedjasper:ks-utils:1.0'
+}`
+
 Use a custom application class and add this code in the onCreate() method
 ```java
 new KSUtils.Builder()
