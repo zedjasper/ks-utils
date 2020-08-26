@@ -8,6 +8,8 @@ import android.content.pm.Signature;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.orm.SchemaGenerator;
+import com.orm.SugarDb;
 import com.pixplicity.easyprefs.library.Prefs;
 
 import java.lang.reflect.ParameterizedType;
@@ -30,6 +32,10 @@ public final class KSUtils {
                 .setContext(mContext)
                 .setMode(ContextWrapper.MODE_PRIVATE)
                 .build();
+
+        //Create cache table here
+        SchemaGenerator schemaGenerator = new SchemaGenerator(mContext);
+        schemaGenerator.createDatabase(new SugarDb(mContext).getDB());
     }
 
     public static void log(String msg){
