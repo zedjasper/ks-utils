@@ -1,5 +1,7 @@
 A set of common utilities for an Android project. It includes SugarORM, Prefs, Retrofit, Google Gson and other utility methods.
 
+You do not need to add retrofit, gson, sugarorm and prefs to your application. This library will add those for you.
+
 ### How to setup
 
 Use a custom application class and add this code in the onCreate() method
@@ -28,7 +30,7 @@ Add these to your AndroidManifest.xml
     android:value="true" />
 ```
 
-<code>dbname.db</code> is the name of your database. <code>package_name</code> is the name of your android application package.
+`dbname.db` is the name of your database. `package_name` is the name of your android application package.
 
 Below is an example of how to get a response from the server and return a cached copy if available
 ```java
