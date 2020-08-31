@@ -69,3 +69,15 @@ CacheManager.get(call, new KSCallback<List<Store>>() {
     }
 });
 ```
+
+### Utility Methods
+```java
+KSUtils.log(String message); //Logs a message using the LOG_TAG in config
+KSUtils.logE(String message); //Logs an error message
+KSUtils.md5(String s); //Returns md5 hash of a string
+KSUtils.getInitials(String s); //Returns initials of a string e.g Kola Studios = KS
+KSUtils.isValidEmail(String email); //Returns whether an email address is valid or not
+KSUtils.printFacebookKeyHash(String package);
+KSUtils.getVersionCode(); //Returns the android version code
+KSUtils.getVersionName(); //Returns the android version name
+```

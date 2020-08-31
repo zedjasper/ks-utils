@@ -119,9 +119,9 @@ public class KSUtils {
         return 0;
     }
 
-    public static String getVersionName(Context ctx){
+    public static String getVersionName(){
         try {
-            PackageInfo pInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+            PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
             return pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             logE("Error getting version code -> " + e.getMessage());
