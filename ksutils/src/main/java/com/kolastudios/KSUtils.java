@@ -8,34 +8,29 @@ import android.content.pm.Signature;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.orm.SchemaGenerator;
-import com.orm.SugarDb;
 import com.pixplicity.easyprefs.library.Prefs;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.WildcardType;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import retrofit2.Call;
-
-public final class KSUtils {
+public class KSUtils {
     private static String mLogTag;
     private static boolean mLogEnabled = false;
     private static Context mContext;
 
+    public static DBHandler dbHandler;
+
     private static void initUtils(){
+        KSUtils.log("initUtils");
+
         new Prefs.Builder()
                 .setContext(mContext)
                 .setMode(ContextWrapper.MODE_PRIVATE)
                 .build();
 
-        //Create cache table here
-        SchemaGenerator schemaGenerator = new SchemaGenerator(mContext);
-        schemaGenerator.createDatabase(new SugarDb(mContext).getDB());
+        dbHandler = DBHandler.getInstance(mContext);
     }
 
     public static void log(String msg){
@@ -58,12 +53,12 @@ public final class KSUtils {
             return;
         }
 
-        android.util.Log.e(mLogTag, msg);
+        Log.e(mLogTag, msg);
     }
 
     public static String md5(String s){
         try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(s.getBytes());
             byte messageDigest[] = digest.digest();
 

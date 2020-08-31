@@ -15,9 +15,10 @@ public class MainActivity extends BaseActivity {
 
         Call<List<Store>> call = apiInterface.getStores(1);
 
-        CacheManager.get(call, new KSCallback<List<Store>>() {
+        CacheManager.get(call, false, false, new KSCallback<List<Store>>() {
             @Override
             public void callback(KSResponse<List<Store>> response) {
+                KSUtils.log("callback() -> " + response.code() + " : " + response.isCache());
                 if(response.isSuccessful()){
                     if(!response.isCache()){
                         for(Store store: response.body()){

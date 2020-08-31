@@ -1,5 +1,8 @@
 package com.kolastudios;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -10,18 +13,63 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CacheManager {
+    static final String TABLE_NAME = "cache";
+    static final String COLUMN_ID = "id";
+    static final String COLUMN_MD5 = "md5";
+    static final String COLUMN_URL = "url";
+    static final String COLUMN_CONTENT = "content";
+
     private static Cache getCache(String url){
-        return Cache.findByField(Cache.class, "MD5", KSUtils.md5(url));
+        String md5 = KSUtils.md5(url);
+
+        SQLiteDatabase db = KSUtils.dbHandler.getReadableDatabase();
+        String query = String.format("SELECT * FROM %s WHERE %s = ?", TABLE_NAME, COLUMN_MD5);
+        Cursor cursor = db.rawQuery(query, new String[]{md5});
+
+        Cache cache = null;
+
+        try {
+            if (cursor.moveToFirst()) {
+                cache = new Cache();
+                cache.md5 = md5;
+                cache.url = cursor.getString(cursor.getColumnIndex(COLUMN_URL));
+                cache.content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT));
+            }
+        } catch (Exception e) {
+            KSUtils.logE("Error while trying to get cache from database -> " + e.getMessage());
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+
+        return cache;
     }
 
     private static void saveCache(Cache cache){
-        Cache existing = getCache(cache.url);
+        if(cache.md5 == null){
+            cache.md5 = KSUtils.md5(cache.url);
+        }
 
-        if(existing != null){
-            existing.content = cache.content;
-            existing.save();
-        }else{
-            cache.save();
+        SQLiteDatabase db = KSUtils.dbHandler.getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_MD5, cache.md5);
+            values.put(COLUMN_URL, cache.url);
+            values.put(COLUMN_CONTENT, cache.content);
+
+            int rows = db.update(TABLE_NAME, values, COLUMN_MD5 + "= ?", new String[]{cache.md5});
+
+            if (rows == 0) {
+                db.insertOrThrow(TABLE_NAME, null, values);
+                db.setTransactionSuccessful();
+            }
+        } catch (Exception e) {
+            KSUtils.logE("Error while trying to add or update cache -> " + e.getMessage());
+        } finally {
+            db.endTransaction();
         }
     }
 
