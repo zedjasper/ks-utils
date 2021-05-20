@@ -2,6 +2,8 @@ package com.kolastudios;
 
 import android.os.Bundle;
 
+import com.aquery.AQuery;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,5 +35,8 @@ public class MainActivity extends BaseActivity {
                 KSUtils.logE("onError() -> " + t.getMessage() + " : " + isCache);
             }
         });
+
+        AQuery aq = new AQuery(this);
+        aq.id(R.id.img_test).image("https://mdundo.com/media/articles/1440675435_2706_b.jpg");
     }
 }
