@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,23 +77,22 @@ public class CacheManager {
     }
 
     static class CacheRequest<T>{
-        CacheRequest(Call<T> call, boolean skipCache, boolean abortIfCached, final KSCallback<T> callback){
-            execute(call, skipCache, abortIfCached, callback);
+        CacheRequest(Call<T> call, boolean skipCache, boolean abortIfCached, TypeToken type, final KSCallback<T> callback){
+            execute(call, skipCache, abortIfCached, type, callback);
         }
 
-        private void execute(Call<T> call, boolean skipCache, boolean abortIfCached, final KSCallback<T> callback){
+        private void execute(Call<T> call, boolean skipCache, boolean abortIfCached, TypeToken type, final KSCallback<T> callback){
             boolean cached = false;
 
             if(!skipCache){
                 Cache cache = CacheManager.getCache(call.request().url().toString());
                 if(cache != null && !TextUtils.isEmpty(cache.content)){
                     try{
-                        T body = new Gson().fromJson(cache.content, new TypeToken<T>(){}.getType());
+                        T body = new Gson().fromJson(cache.content, type.getType());
                         KSResponse<T> response = new KSResponse<>(body, 200, true, true);
                         callback.callback(response);
                         cached = true;
                     }catch (Exception ex){
-                        KSUtils.logE("Error converting cache to object -> " + ex.getMessage());
                         callback.onError(ex, true);
                     }
                 }
@@ -127,8 +129,8 @@ public class CacheManager {
      * @param callback KSCallback to receive responses from the cache or network calls
      * @param <T> The response type
      */
-    public static <T> void get(Call<T> call, boolean skipCache, boolean abortIfCached, final KSCallback<T> callback){
-        new CacheRequest<T>(call, skipCache, abortIfCached, callback);
+    public static <T> void get(Call<T> call, boolean skipCache, boolean abortIfCached, TypeToken type, final KSCallback<T> callback){
+        new CacheRequest<T>(call, skipCache, abortIfCached, type, callback);
     }
 
     /**
@@ -137,7 +139,7 @@ public class CacheManager {
      * @param callback KSCallback to receive responses from the cache or network calls
      * @param <T> The response type
      */
-    public static <T> void get(Call<T> call, final KSCallback<T> callback){
-        new CacheRequest<T>(call, false, false, callback);
+    public static <T> void get(Call<T> call, TypeToken type, final KSCallback<T> callback){
+        new CacheRequest<T>(call, false, false, type, callback);
     }
 }

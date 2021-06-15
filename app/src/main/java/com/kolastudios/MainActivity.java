@@ -26,6 +26,10 @@ public class MainActivity extends BaseActivity {
                         for(Store store: response.body()){
                             store.save();
                         }
+                    }else{
+                        for(Store s: response.body()){
+                            KSUtils.log(s.name);
+                        }
                     }
                 }
             }
