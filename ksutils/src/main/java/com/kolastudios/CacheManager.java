@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import java.util.List;
 
@@ -67,8 +68,9 @@ public class CacheManager {
 
             if (rows == 0) {
                 db.insertOrThrow(TABLE_NAME, null, values);
-                db.setTransactionSuccessful();
             }
+
+            db.setTransactionSuccessful();
         } catch (Exception e) {
             KSUtils.logE("Error while trying to add or update cache -> " + e.getMessage());
         } finally {
