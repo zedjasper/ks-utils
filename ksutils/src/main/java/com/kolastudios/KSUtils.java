@@ -235,6 +235,22 @@ public class KSUtils {
         return phone;
     }
 
+    public static String formatDateShort(String date){
+        return formatDateShort(getDate(date));
+    }
+
+    public static String formatDateShort(long millis){
+        return formatDateShort(new Date(millis));
+    }
+
+    public static String formatDateShort(Date date){
+        if(DateUtils.isToday(date)){
+            return SimpleDateFormat.getTimeInstance().format(date);
+        }
+
+        return SimpleDateFormat.getDateTimeInstance().format(date);
+    }
+
     /**
      * Builder for the KSUtils class.
      */
