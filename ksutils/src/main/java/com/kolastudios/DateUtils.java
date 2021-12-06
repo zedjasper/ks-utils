@@ -248,6 +248,21 @@ public class DateUtils {
         return (d1.before(d2)) ? d1 : d2;
     }
 
+    public static boolean isSameYear(Calendar cal1, Calendar cal2) {
+        if (cal1 == null || cal2 == null) {
+            throw new IllegalArgumentException("The dates must not be null");
+        }
+
+        return (cal1.get(Calendar.ERA) == cal2.get(Calendar.ERA) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR));
+    }
+
+    public static boolean isThisYear(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return isSameYear(calendar, Calendar.getInstance());
+    }
+
     /** The maximum date possible. */
     public static Date MAX_DATE = new Date(Long.MAX_VALUE);
 }
